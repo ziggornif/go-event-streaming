@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=monitoring
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=monitoring-article
+  nats:
+    image: nats:latest
+    command: "-js"
+    ports:
+      - "4222:4222"
