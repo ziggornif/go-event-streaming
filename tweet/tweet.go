@@ -10,9 +10,9 @@ import (
 
 type Tweet struct {
 	gorm.Model
-	ID      string `gorm:"primaryKey" json:"id"`
-	Message string `json:"message"`
-	Author  string `json:"author"`
+	ID      string `gorm:"primaryKey"`
+	Message string
+	Author  string
 }
 
 func (t *Tweet) ToResponse() TweetResponse {
