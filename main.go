@@ -3,21 +3,13 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"gitlab.com/ziggornif/go-event-streaming/listener"
 	"gitlab.com/ziggornif/go-event-streaming/streaming"
 	"gitlab.com/ziggornif/go-event-streaming/tweet"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"net/http"
 )
-
-func prometheusHandler() gin.HandlerFunc {
-	h := promhttp.Handler()
-
-	return func(c *gin.Context) {
-		h.ServeHTTP(c.Writer, c.Request)
-	}
-}
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
@@ -32,6 +24,9 @@ func main() {
 	if err != nil {
 		panic("failed to connect database")
 	}
+
+	// Init events listener
+	listener.NewListener(router)
 
 	tweetService := tweet.NewTweetService(db, jsDispatcher)
 
@@ -55,8 +50,6 @@ func main() {
 
 		c.JSON(http.StatusOK, tweets)
 	})
-
-	router.GET("/metrics", prometheusHandler())
 
 	router.Run(":8080")
 }
