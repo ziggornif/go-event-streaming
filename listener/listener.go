@@ -12,11 +12,6 @@ func NewListener(router *gin.Engine) {
 
 	listenerRouter := router.Group("/listener")
 	{
-		router.LoadHTMLFiles("listener/listener.html")
-		listenerRouter.GET("/", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "listener.html", nil)
-		})
-
 		listenerRouter.GET("/events", func(c *gin.Context) {
 			c.JSON(http.StatusOK, events)
 			events = []string{}

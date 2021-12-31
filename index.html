@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+
+    <style>
+        .event {
+            border:2px solid black;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            var log = document.getElementById("events");
+
+            function appendLog(items) {
+                (items || []).forEach(item => {
+                    var elem = document.createElement("div");
+                    var header = document.createElement("p");
+                    header.innerText = "⚡️ event : tweet-created"
+                    var text = document.createElement("p");
+                    text.innerText = item
+                    // var header = document.createTextNode("⚡️ event : tweet-created");
+                    // var text = document.createTextNode(item);
+                    // header.innerText = "⚡️ event : tweet-created"
+                    // header.classList.add("padding-medium")
+                    elem.appendChild(header);
+                    elem.appendChild(text);
+                    elem.classList.add("event")
+
+                    log.appendChild(elem);
+                })
+            }
+
+            async function getEvents() {
+                const response = await fetch("http://localhost:8080/listener/events")
+                const items = await response.json();
+                return appendLog(items)
+            }
+
+            setInterval(getEvents, 1000)
+        };
+
+        function postTweet() {
+            var message = document.getElementById('message').value;
+            var author = document.getElementById('author').value;
+
+            if(!message || !author) return
+
+            return fetch("/tweets", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message,
+                    author
+                })
+            }).then(() => {
+                document.getElementById('message').value = null;
+                document.getElementById('author').value = null;
+            });
+        }
+    </script>
+
+</head>
+<body>
+    <main class="container">
+        <div class="grid">
+            <div>
+                <h3>Fake twitter</h3>
+                <form onsubmit="return false">
+                    <label for="message">Message</label>
+                    <input type="text" id="message" name="message" placeholder="Tweet message" required>
+
+                    <label for="author">Author</label>
+                    <input type="text" id="author" name="author" placeholder="Author name" required>
+
+                    <button type="submit" onclick="postTweet()">Post 🚀</button>
+                </form>
+            </div>
+            <div>
+                <h3>(JetStream) Events listener</h3>
+                <div id="events"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

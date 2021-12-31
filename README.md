@@ -20,17 +20,10 @@ docker compose up -d
 
 ## How to use it ?
 
-Open http://localhost:8080/listener/ URL in your browser.
+Open http://localhost:8080/ URL in your browser.
 
-Then call http://localhost:8080/tweet endpoint with a request like the following example :
+Then fill the fake tweet form to post a tweet.
 
-```
-POST http://localhost:8080/tweet
+Once the entity is created, an event will be sent in Jetstream then retrieved by the event listener and displayed in the right part of the page.
 
-{
-    "message": "Hello world !",
-    "author": "ziggornif"
-}
-```
-
-Once the entity is created, an event will be sent in Jetstream then retrieved by the event listener and displayed in the page opened earlier.  
+![example](example.png)

@@ -51,5 +51,10 @@ func main() {
 		c.JSON(http.StatusOK, tweets)
 	})
 
+	router.LoadHTMLFiles("index.html")
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
+
 	router.Run(":8080")
 }

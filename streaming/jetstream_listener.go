@@ -21,7 +21,7 @@ func NewJetStreamListener(events *[]string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		*events = append(*events, fmt.Sprintf("New tweet from %v : %v", event.Author, event.Message))
+		*events = append(*events, fmt.Sprintf("%v (author %v)", event.Message, event.Author))
 
 	}, nats.Durable("go-event-subscriber"), nats.ManualAck())
 }
