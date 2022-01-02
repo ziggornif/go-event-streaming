@@ -2,12 +2,11 @@ package streaming
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/nats-io/nats.go"
 	"log"
 )
 
-func NewJetStreamListener(events *[]string) {
+func NewJetStreamListener(events *[]Event) {
 	nc, _ := nats.Connect(nats.DefaultURL)
 	js, err := nc.JetStream()
 	if err != nil {
@@ -21,7 +20,7 @@ func NewJetStreamListener(events *[]string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		*events = append(*events, fmt.Sprintf("%v (author %v)", event.Message, event.Author))
+		*events = append(*events, event)
 
 	}, nats.Durable("go-event-subscriber"), nats.ManualAck())
 }

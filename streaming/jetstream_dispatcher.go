@@ -9,11 +9,11 @@ import (
 )
 
 type Event struct {
-	MessageType string
-	ID          string
-	Message     string
-	Date        time.Time
-	Author 		string
+	MessageType string    `json:"messageType"`
+	ID          string    `json:"id"`
+	Message     string    `json:"message"`
+	Date        time.Time `json:"date"`
+	Author      string    `json:"author"`
 }
 
 type Dispatcher interface {

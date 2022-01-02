@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Fake twitter</title>
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 
     <style>
@@ -12,28 +12,47 @@
             padding: 10px;
             margin-bottom: 10px;
         }
+
+        .event > div {
+            padding: 5px;
+        }
     </style>
 
     <script>
         window.onload = function () {
-            var log = document.getElementById("events");
+            const events = document.getElementById("events");
 
             function appendLog(items) {
                 (items || []).forEach(item => {
-                    var elem = document.createElement("div");
-                    var header = document.createElement("p");
-                    header.innerText = "⚡️ event : tweet-created"
-                    var text = document.createElement("p");
-                    text.innerText = item
-                    // var header = document.createTextNode("⚡️ event : tweet-created");
-                    // var text = document.createTextNode(item);
-                    // header.innerText = "⚡️ event : tweet-created"
-                    // header.classList.add("padding-medium")
+                    const elem = document.createElement("div");
+                    const header = document.createElement("div");
+                    const eventDate = new Intl.DateTimeFormat("fr-FR", {
+                            weekday: "short",
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                        }
+                    ).format(
+                        new Date(item.date)
+                    )
+                    header.innerText = `⚡️ event : ${item.messageType} - ${eventDate}`
+
+                    const text = document.createElement("div");
+                    text.innerText = `📝 message : ${item.message}`
+
+                    const footer = document.createElement("div")
+                    footer.innerText = `👤️ author : ${item.author}`
+                    footer.classList.add("footer")
+
                     elem.appendChild(header);
                     elem.appendChild(text);
-                    elem.classList.add("event")
+                    elem.appendChild(footer);
 
-                    log.appendChild(elem);
+                    elem.classList.add("event")
+                    events.appendChild(elem);
                 })
             }
 
@@ -47,8 +66,8 @@
         };
 
         function postTweet() {
-            var message = document.getElementById('message').value;
-            var author = document.getElementById('author').value;
+            const message = document.getElementById('message').value;
+            const author = document.getElementById('author').value;
 
             if(!message || !author) return
 

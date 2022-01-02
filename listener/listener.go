@@ -7,14 +7,14 @@ import (
 )
 
 func NewListener(router *gin.Engine) {
-	var events []string
+	var events []streaming.Event
 	go streaming.NewJetStreamListener(&events)
 
 	listenerRouter := router.Group("/listener")
 	{
 		listenerRouter.GET("/events", func(c *gin.Context) {
 			c.JSON(http.StatusOK, events)
-			events = []string{}
+			events = []streaming.Event{}
 		})
 	}
 }
