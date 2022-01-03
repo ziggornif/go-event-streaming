@@ -26,4 +26,4 @@ Then fill the fake tweet form to post a tweet.
 
 Once the entity is created, an event will be sent in Jetstream then retrieved by the event listener and displayed in the right part of the page.
 
-![example](example.png)
+![example](example.gif)
