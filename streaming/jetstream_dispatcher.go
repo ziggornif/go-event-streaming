@@ -46,6 +46,7 @@ func NewJetStreamDispatcher() Dispatcher {
 
 func (jsd *jetstreamDispatcher) Emit(subject string, event Event) error {
 	jsonEvent, _ := json.Marshal(event)
+	fmt.Println(fmt.Sprintf("%v.%v", streamName, subject))
 	ack, err := jsd.js.Publish(fmt.Sprintf("%v.%v", streamName, subject), jsonEvent)
 	if err != nil {
 		log.Println(err)

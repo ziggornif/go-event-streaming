@@ -13,7 +13,7 @@ func NewJetStreamListener(events *[]Event) {
 		log.Fatal(err)
 	}
 	// Create durable consumer monitor
-	js.Subscribe("TWITTERCLONE.tweet_created", func(msg *nats.Msg) {
+	js.Subscribe("TWITTERCLONE.*", func(msg *nats.Msg) {
 		msg.Ack()
 		var event Event
 		err := json.Unmarshal(msg.Data, &event)

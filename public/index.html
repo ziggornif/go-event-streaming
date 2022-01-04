@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fake twitter</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+
+    <style>
+        .event {
+            border:2px solid black;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .event > div {
+            padding: 5px;
+        }
+    </style>
+
+
+    <script src="public/js/app.js" type="module"></script>
+    <script src="public/js/tweets-service.js" type="module"></script>
+
+</head>
+<body>
+    <main class="container">
+        <div class="grid">
+            <div>
+                <h3>Fake twitter</h3>
+                <form onsubmit="return false">
+                    <label for="message">Message</label>
+                    <input type="text" id="message" name="message" placeholder="Tweet message" required>
+
+                    <label for="author">Author</label>
+                    <input type="text" id="author" name="author" placeholder="Author name" required>
+
+                    <button id="tweetbtn">Post 🚀</button>
+                </form>
+
+                <div id="tweets"></div>
+            </div>
+            <div>
+                <h3>(JetStream) Events listener</h3>
+                <div id="events"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

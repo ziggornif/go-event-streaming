@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/ziggornif/go-event-streaming/listener"
@@ -8,7 +10,6 @@ import (
 	"gitlab.com/ziggornif/go-event-streaming/tweet"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"net/http"
 )
 
 func main() {
@@ -18,6 +19,8 @@ func main() {
 
 	router := gin.Default()
 	router.Use(cors.Default())
+
+	router.Static("/public", "./public")
 
 	dsn := "host=localhost user=monitoring password=secret dbname=monitoring-article port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -51,7 +54,18 @@ func main() {
 		c.JSON(http.StatusOK, tweets)
 	})
 
-	router.LoadHTMLFiles("index.html")
+	router.POST("/tweets/:id/likes", func(c *gin.Context) {
+		tweetID := c.Param("id")
+		likeErr := tweetService.LikeTweet(tweetID)
+		if likeErr != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": likeErr.Error()})
+			return
+		}
+
+		c.Status(http.StatusNoContent)
+	})
+
+	router.LoadHTMLFiles("./public/index.html")
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
