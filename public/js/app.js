@@ -1,12 +1,9 @@
 import {getEvents, appendEvents} from "./events-service.js";
 import {getTweets, appendTweets, postTweet, likeTweet} from "./tweets-service.js";
 
-let eventsDom;
-let tweetDom;
-
 window.onload = async function () {
-  eventsDom = document.getElementById("events");
-  tweetDom = document.getElementById("tweets");
+  const eventsDom = document.getElementById("events");
+  const tweetDom = document.getElementById("tweets");
 
   const tweets = await getTweets();
   appendTweets(tweetDom, tweets)
