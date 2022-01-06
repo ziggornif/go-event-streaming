@@ -1,4 +1,4 @@
-import {getEvents, appendEvents} from "./events-service.js";
+import {appendEvent} from "./events-service.js";
 import {getTweets, appendTweets, postTweet, likeTweet} from "./tweets-service.js";
 
 window.onload = async function () {
@@ -8,13 +8,14 @@ window.onload = async function () {
   const tweets = await getTweets();
   appendTweets(tweetDom, tweets)
 
-  setInterval(async () => {
-    const events = await getEvents();
-    appendEvents(eventsDom, events)
-  }, 1000)
-
   document.getElementById("tweetbtn").addEventListener("click", async function () {
     const tweet = await postTweet();
     appendTweets(tweetDom, [tweet])
   })
+
+  const conn = new WebSocket("ws://localhost:8080/listener/ws");
+
+  conn.onmessage = function (evt) {
+    appendEvent(eventsDom, JSON.parse(evt.data));
+  };
 };
