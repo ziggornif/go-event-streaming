@@ -27,7 +27,6 @@ func makeListener(evtChan chan streaming.Event) func(w http.ResponseWriter, r *h
 }
 
 func NewListener(router *gin.Engine) {
-	var events []streaming.Event
 	evtChan := make(chan streaming.Event)
 	go streaming.NewJetStreamListener(evtChan)
 
@@ -35,11 +34,6 @@ func NewListener(router *gin.Engine) {
 
 	listenerRouter := router.Group("/listener")
 	{
-		listenerRouter.GET("/events", func(c *gin.Context) {
-			c.JSON(http.StatusOK, events)
-			events = []streaming.Event{}
-		})
-
 		listenerRouter.GET("/ws", func(c *gin.Context) {
 			eventsListener(c.Writer, c.Request)
 		})
