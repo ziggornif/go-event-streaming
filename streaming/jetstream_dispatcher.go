@@ -3,9 +3,10 @@ package streaming
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nats-io/nats.go"
 	"log"
 	"time"
+
+	"github.com/nats-io/nats.go"
 )
 
 type Event struct {
@@ -33,8 +34,9 @@ func NewJetStreamDispatcher() Dispatcher {
 	nc, _ := nats.Connect(nats.DefaultURL)
 	js, _ := nc.JetStream() // Returns JetStreamContext
 	_, err := js.AddStream(&nats.StreamConfig{
-		Name:     streamName,
-		Subjects: []string{streamSubjects},
+		Name:        streamName,
+		Subjects:    []string{streamSubjects},
+		Description: "Streaming article example",
 	})
 
 	if err != nil {
